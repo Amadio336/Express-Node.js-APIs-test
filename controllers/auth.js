@@ -45,10 +45,10 @@ export const login = async (req, res) => {
     const email = req.body.email
     const password = req.body.password
 
+    if(!email){return res.status(404).json({status: "error", message: "utente o password errati"})}
 
     const user = await User.findOne({email})
 
-    if(!email){return res.status(404).json({status: "error", message: "utente o password errati"})}
 
     if (await bcrypt.compare(password, user.password)) {
         const token = jwt.sign({id: user._id, email: user.email}, process.env.JWT_SECRET)
